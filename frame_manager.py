@@ -55,7 +55,6 @@ class FrameManager:
 
     def update_frame(self, frame):
         self.frame = frame
-        print("NEW FRAME UPDATE##################")
 
     def update_bbox(self, bbox):
         img_h, img_w, _ = self.image.shape
