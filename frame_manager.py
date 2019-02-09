@@ -14,10 +14,10 @@ class FrameManager:
     def get_image(self):
         frame_h, frame_w, _ = self.frame.shape
         if self.predicted_bbox:
-            x_center = self.roi.get_x_center()
-            y_center = self.roi.get_y_center()
-            image_h = self.roi.compute_output_height()
-            image_w = self.roi.compute_output_height()
+            x_center = self.predicted_bbox.get_x_center()
+            y_center = self.predicted_bbox.get_y_center()
+            image_h = self.predicted_bbox.compute_output_height()
+            image_w = self.predicted_bbox.compute_output_height()
             y1_img = max(1, int(y_center - (image_h / 2)))
             y2_img = int(y_center + (image_h / 2))
             x1_img = max(1, int(x_center - (image_w / 2)))
@@ -69,12 +69,12 @@ class FrameManager:
             new_y1 = self.roi.y1 + offset_y1
             new_y2 = self.roi.y2 + offset_y2
             self.predicted_bbox = BoundingBox(new_x1, new_y1, new_x2, new_y2)
-
-        new_x1 = self.predicted_bbox.x1 + offset_x1
-        new_x2 = self.predicted_bbox.x2 + offset_x2
-        new_y1 = self.predicted_bbox.y1 + offset_y1
-        new_y2 = self.predicted_bbox.y2 + offset_y2
-        self.predicted_bbox.update_coordinates(new_x1, new_x2, new_y1, new_y2)
+        else:
+            new_x1 = self.predicted_bbox.x1 + offset_x1
+            new_x2 = self.predicted_bbox.x2 + offset_x2
+            new_y1 = self.predicted_bbox.y1 + offset_y1
+            new_y2 = self.predicted_bbox.y2 + offset_y2
+            self.predicted_bbox.update_coordinates(new_x1, new_x2, new_y1, new_y2)
         # print('x coord new:', new_x1, new_x2)
         # print('y coord new:', new_y1, new_y2)
 

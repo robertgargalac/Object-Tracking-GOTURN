@@ -41,6 +41,7 @@ while True:
                                                  }
                           )
     prediction_scaled = prediction[0] / 10
+    print(prediction_scaled)
     frame_manager.update_bbox(prediction_scaled)
     frame_manager.draw_bbox()
     print(prediction_scaled)
