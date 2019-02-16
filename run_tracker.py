@@ -11,9 +11,14 @@ video = cv2.VideoCapture('train_video.avi')
 if not video.isOpened():
     print('Could not open video')
     sys.exit()
-ok, frame = video.read()
-if not ok:
-    print('Cannot read video file')
+while True:
+    ok, frame = video.read()
+    if not ok:
+        print('Cannot read video file')
+    cv2.imshow('GOTURN TRACKER', frame)
+    k = cv2.waitKey(25) & 0xff
+    if k == 113:
+        break
 
 man_bbox = cv2.selectROI(frame, False)
 roi = BoundingBox(man_bbox[0], man_bbox[1], man_bbox[0] + man_bbox[2], man_bbox[1] + man_bbox[3])
