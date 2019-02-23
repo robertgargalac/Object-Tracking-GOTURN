@@ -17,7 +17,7 @@ class FrameManager:
             x_center = self.predicted_bbox.get_x_center()
             y_center = self.predicted_bbox.get_y_center()
             image_h = self.predicted_bbox.compute_output_height()
-            image_w = self.predicted_bbox.compute_output_height()
+            image_w = self.predicted_bbox.compute_output_width()
             y1_img = max(1, int(y_center - (image_h / 2)))
             y2_img = int(y_center + (image_h / 2))
             x1_img = max(1, int(x_center - (image_w / 2)))
@@ -35,7 +35,7 @@ class FrameManager:
         x_center = self.roi.get_x_center()
         y_center = self.roi.get_y_center()
         image_h = self.roi.compute_output_height()
-        image_w = self.roi.compute_output_height()
+        image_w = self.roi.compute_output_width()
         y1_img = max(1, int(y_center - (image_h / 2)))
         y2_img = int(y_center + (image_h / 2))
         x1_img = max(1, int(x_center - (image_w / 2)))
@@ -49,8 +49,6 @@ class FrameManager:
                      y1_img: y2_img,
                      x1_img: x2_img
         ]
-        # cv2.imshow('image', self.image)
-        # cv2.waitKey(0)
         return cv2.resize(self.image, (227, 227))
 
     def update_frame(self, frame):
@@ -73,7 +71,7 @@ class FrameManager:
             new_x2 = self.predicted_bbox.x2 + offset_x2
             new_y1 = self.predicted_bbox.y1 + offset_y1
             new_y2 = self.predicted_bbox.y2 + offset_y2
-            self.predicted_bbox.update_coordinates(new_x1, new_x2, new_y1, new_y2)
+            self.predicted_bbox = BoundingBox(new_x1, new_y1, new_x2, new_y2)
         # print('x coord new:', new_x1, new_x2)
         # print('y coord new:', new_y1, new_y2)
 
