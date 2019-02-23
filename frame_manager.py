@@ -71,7 +71,7 @@ class FrameManager:
             new_x2 = self.predicted_bbox.x2 + offset_x2
             new_y1 = self.predicted_bbox.y1 + offset_y1
             new_y2 = self.predicted_bbox.y2 + offset_y2
-            self.predicted_bbox = BoundingBox(new_x1, new_y1, new_x2, new_y2)
+            self.predicted_bbox.update_coordinates(new_x1, new_x2, new_y1, new_y2)
         # print('x coord new:', new_x1, new_x2)
         # print('y coord new:', new_y1, new_y2)
 
