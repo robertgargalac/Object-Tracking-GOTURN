@@ -72,11 +72,3 @@ class FrameManager:
             new_y1 = self.predicted_bbox.y1 + offset_y1
             new_y2 = self.predicted_bbox.y2 + offset_y2
             self.predicted_bbox.update_coordinates(new_x1, new_x2, new_y1, new_y2)
-        # print('x coord new:', new_x1, new_x2)
-        # print('y coord new:', new_y1, new_y2)
-
-    def draw_bbox(self):
-        p1 = (int(self.predicted_bbox.x1), int(self.predicted_bbox.y1))
-        p2 = (int(self.predicted_bbox.x2), int(self.predicted_bbox.y2))
-        cv2.rectangle(self.frame, p1, p2, (255, 0, 0), 2, 1)
-
