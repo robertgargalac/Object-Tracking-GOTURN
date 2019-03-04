@@ -3,7 +3,7 @@ import cv2
 from bounding_box import BoundingBox
 
 
-class FrameManager:
+class FrameManager():
 
     def __init__(self, frame, roi):
         self.roi = roi
