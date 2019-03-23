@@ -57,10 +57,11 @@ class ObjectTracking(tk.Tk):
         if not ok:
             print('Cannot read video file')
 
-        bboxes = cv2.selectROIs('MULTI TRACKING VERSION', frame)
-        if bboxes:
-            cv2.destroyAllWindows()
-        # bboxes = [[1006, 184, 79, 81], [513, 309, 114, 150]]
+        #bboxes = cv2.selectROIs('MULTI TRACKING VERSION', frame)
+        # print(bboxes)
+        # if bboxes:
+        #     cv2.destroyAllWindows()
+        bboxes = [[1006, 184, 79, 81], [513, 309, 114, 150]]
         init_rois = [
             BoundingBox(bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3])
             for bbox in bboxes
