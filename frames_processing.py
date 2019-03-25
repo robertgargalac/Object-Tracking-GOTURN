@@ -60,12 +60,12 @@ for video_type in path_collector.keys():
             search_gt = BoundingBox()
 
             x_target_coords = [
-                attr.text
+                float(attr.text)
                 for item in frame if item.tag != 'number'
                 for attr in item if attr.tag == 'x'
             ]
             y_target_coords = [
-                attr.text
+                float(attr.text)
                 for item in frame if item.tag != 'number'
                 for attr in item if attr.tag == 'y'
             ]
@@ -74,12 +74,12 @@ for video_type in path_collector.keys():
             target_frame = cv2.imread(frames_path[int(target_frame_number) - 1])
 
             x_search_coords = [
-                attr.text
+                float(attr.text)
                 for item in root[index + 1] if item.tag != 'number'
                 for attr in item if attr.tag == 'x'
             ]
             y_search_coords = [
-                attr.text
+                float(attr.text)
                 for item in root[index + 1] if item.tag != 'number'
                 for attr in item if attr.tag == 'y'
             ]
@@ -87,15 +87,15 @@ for video_type in path_collector.keys():
             search_frame_number = root[index + 1].find('number').text
             search_frame = cv2.imread(frames_path[int(search_frame_number) - 1])
 
-            x1_t = float(min(x_target_coords))
-            y1_t = float(min(y_target_coords))
-            x2_t = float(max(x_target_coords))
-            y2_t = float(max(y_target_coords))
+            x1_t = min(x_target_coords)
+            y1_t = min(y_target_coords)
+            x2_t = max(x_target_coords)
+            y2_t = max(y_target_coords)
 
-            x2_s = float(min(x_search_coords))
-            y1_s = float(min(y_search_coords))
-            x1_s = float(max(x_search_coords))
-            y2_s = float(max(y_search_coords))
+            x1_s = min(x_search_coords)
+            y1_s = min(y_search_coords)
+            x2_s = max(x_search_coords)
+            y2_s = max(y_search_coords)
 
             target_gt .update_coordinates(x1_t, x2_t, y1_t, y2_t)
             search_gt.update_coordinates(x1_s, x2_s, y1_s, y2_s)
@@ -107,15 +107,16 @@ for video_type in path_collector.keys():
             cv2.waitKey(0)
             cv2.imwrite(os.path.join(search_path, str(patch_counter) + '.jpg'), search)
             cv2.waitKey(0)
-
             scaled_gt = scale_gt(target_gt, search_gt, target)
-
-            with open('train_file.txt', 'a') as train_file:
+            if patch_counter in [2,3,4,10]:
+                print(target_gt.x1)
+                print(search_gt.x1)
+            with open('ann_data.txt', 'a') as data_file:
                 t_patch_path = os.path.join(target_path, str(patch_counter) + '.jpg')
                 s__patch_path = os.path.join(search_path, str(patch_counter) + '.jpg')
 
                 line = t_patch_path + ',' + s__patch_path + ',' + str(scaled_gt.x1) + ',' + str(scaled_gt.y1) + ',' + \
                        str(scaled_gt.x2) + ',' + str(scaled_gt.y2)
 
-                train_file.write(line)
+                data_file.write(line + '\n')
             patch_counter += 1
