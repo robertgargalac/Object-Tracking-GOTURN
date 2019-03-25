@@ -29,18 +29,40 @@ def draw_bboxes(frame, predicted_bboxes):
     return frame
 
 
-def get_patch(frame, bbox):
+def get_patch(frame, bbox, patch_type='target', target_coordinates = None):
     frame_h, frame_w, _ = frame.shape
 
-    x_center = bbox.get_x_center()
-    y_center = bbox.get_y_center()
-    image_h = bbox.compute_output_height()
-    image_w = bbox.compute_output_width()
+    if patch_type == 'target':
+        x_center = bbox.get_x_center()
+        y_center = bbox.get_y_center()
+        image_h = bbox.compute_output_height()
+        image_w = bbox.compute_output_width()
 
-    y1_img = max(1, int(y_center - (image_h / 2)))
-    y2_img = int(y_center + (image_h / 2))
-    x1_img = max(1, int(x_center - (image_w / 2)))
-    x2_img = int(x_center + (image_w / 2))
+        y1_img = max(1, int(y_center - (image_h / 2)))
+        y2_img = min(int(y_center + (image_h / 2)), frame_h)
+        x1_img = max(1, int(x_center - (image_w / 2)))
+        x2_img = min(int(x_center + (image_w / 2)), frame_w)
+
+        if y2_img >= frame_h:
+            y2_img = frame_h
+        if x2_img >= frame_w:
+            x2_img = frame_w
+
+        target_coordinates = (x1_img, x2_img, y1_img, y2_img)
+
+        image = frame[
+                 y1_img: y2_img,
+                 x1_img: x2_img
+                ]
+
+        return image, target_coordinates
+
+    x1_img, x2_img, y1_img, y2_img = target_coordinates
+
+    y1_img = max(1, int(y1_img))
+    y2_img = int(y2_img)
+    x1_img = max(1, int(x1_img))
+    x2_img = int(x2_img)
 
     if y2_img >= frame_h:
         y2_img = frame_h
@@ -48,8 +70,8 @@ def get_patch(frame, bbox):
         x2_img = frame_w
 
     image = frame[
-             y1_img: y2_img,
-             x1_img: x2_img
+            y1_img: y2_img,
+            x1_img: x2_img
             ]
     return image
 
